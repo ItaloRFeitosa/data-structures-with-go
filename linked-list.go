@@ -1,51 +1,53 @@
 package main
 import ( 
-	"fmt"
 	u "github.com/italorfeitosa/data-structures-with-go/utils"
 )
 
 type Block struct {
 	ID string
-	prev *Block
+	content interface{}
+	next *Block
 }
 
 type BlockChain struct {
-	lastBlockAdded *Block
+	head *Block
+	tail *Block
 	length int
 }
 
 func newBlockChain() *BlockChain {
 	return &BlockChain{
-		lastBlockAdded: nil,
+		head: nil,
 		length: 0,
 	}
 }
 
 func (bc *BlockChain) addBlock(b *Block) {
-	if bc.lastBlockAdded != nil {
-		b.prev = bc.lastBlockAdded
-		bc.lastBlockAdded = b
+	if bc.head != nil {
+		b.next = bc.head
+		bc.head = b
 	} else {
-		bc.lastBlockAdded = b
+		bc.head = b
 	}
 	bc.length += 1
 }
 
-func newBlock() *Block{
+func newBlock(content interface{}) *Block{
 	id := u.GenerateUuid();
 	u.Log(id)
 	return &Block{
 		ID: id,
-		prev: nil,
+		content: content,
+		next: nil,
 	}
 }
 
 func main() {
 	blockChain := newBlockChain()
-	blockChain.addBlock(newBlock())
-	blockChain.addBlock(newBlock())
-	blockChain.addBlock(newBlock())
-	blockChain.addBlock(newBlock())
-	blockChain.addBlock(newBlock())
-	fmt.Println(blockChain.lastBlockAdded.prev)
+	blockChain.addBlock(newBlock(nil))
+	blockChain.addBlock(newBlock(42))
+	blockChain.addBlock(newBlock("teste"))
+	blockChain.addBlock(newBlock(32))
+	blockChain.addBlock(newBlock(5+3))
+	u.Log(blockChain.head)
 }

@@ -2,6 +2,6 @@ package utils
 
 import "fmt"
 
-func Log(data string){
+func Log(data interface{}){
 	fmt.Println(data)
 }
